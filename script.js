@@ -5,6 +5,8 @@ let decrease = document.querySelector(".js-btn-decrease");
 let increase = document.querySelector(".js-btn-increase");
 let start = document.querySelector(".js-btn-start");
 let ring = document.querySelector(".js-btn-ring");
+let clickCount = 0;
+let singleClickTimer
 let time = 10;
 let clear
 let shake = document.querySelector(".alarm");
@@ -19,9 +21,23 @@ function timeDecrease() {
     }
 }
 
+function dblDecrease() {
+    if (time >= 10) {
+        time -=10;
+        remainingTime.textContent = time + " sec.";
+    }
+}
+
 function timeIncrease() {
     if (time >= 0) {
         time += 1
+        remainingTime.textContent = time + " sec.";
+    }
+}
+
+function dblIncrease() {
+    if (time >= 0) {
+        time +=10;
         remainingTime.textContent = time + " sec.";
     }
 }
@@ -45,7 +61,7 @@ function check() {
     if ( time >= 2) {
        time -= 1;
        remainingTime.textContent = time + " sec.";
-     } else if (time < 2) {
+     } else {
         time -= 1;
         remainingTime.textContent = time + " sec.";
         sonnerie();
@@ -55,7 +71,34 @@ function check() {
 
 
 
-decrease.addEventListener("click", timeDecrease);
-increase.addEventListener("click", timeIncrease);
+decrease.addEventListener("click", function() {
+    clickCount++;
+    if(clickCount === 1) {
+         singleClickTimer = setTimeout(function() {
+            clickCount = 0;
+            timeDecrease();
+        }, 200);
+        } else if (clickCount === 2) {
+            clearTimeout(singleClickTimer);
+            clickCount = 0;
+            dblDecrease();
+        }
+    });
+
+increase.addEventListener("click", function() {
+    clickCount++;
+    if(clickCount === 1) {
+         singleClickTimer = setTimeout(function() {
+            clickCount = 0;
+            timeIncrease();
+        }, 200);
+        } else if (clickCount === 2) {
+            clearTimeout(singleClickTimer);
+            clickCount = 0;
+            dblIncrease();
+        }
+    });
+
+
 ring.addEventListener("click", sonnerie);
 start.addEventListener("click", timeStart);
