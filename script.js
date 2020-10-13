@@ -6,7 +6,7 @@ let increase = document.querySelector(".js-btn-increase");
 let start = document.querySelector(".js-btn-start");
 let ring = document.querySelector(".js-btn-ring");
 let time = 10;
-let outTime = Number(remainingTime.textContent) * 1000;
+let clear
 let shake = document.querySelector(".alarm");
 remainingTime.textContent = time + " sec.";
 
@@ -38,14 +38,20 @@ function sonnerie() {
 }
 
 function timeStart() {
-      setInterval(timeDecrease, 1000);
-      setTimeout(sonnerie, outTime);
-  }
+    clear = setInterval(check, 1000);
+}
 
-
-
-
-
+function check() {
+    if ( time >= 2) {
+       time -= 1;
+       remainingTime.textContent = time + " sec.";
+     } else if (time < 2) {
+        time -= 1;
+        remainingTime.textContent = time + " sec.";
+        sonnerie();
+        clearInterval(clear);
+     }
+}
 
 
 
